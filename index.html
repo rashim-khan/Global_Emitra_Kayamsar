@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Global Emitra</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0b2a6b">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <style>
+    :root { --off: 6px; }   /* banner chhupane ka number, yahin badlo */
+    html, body { margin:0; height:100%; overflow:hidden; background:#ffffff; }
+    iframe {
+      position:absolute; left:0; top:calc(-1 * var(--off));
+      width:100%; height:calc(100% + var(--off));
+      border:0;
+    }
+    #splash {
+      position:fixed; inset:0; z-index:10; background:#ffffff;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      font-family:sans-serif; transition:opacity .4s ease;
+    }
+    #splash.hide { opacity:0; pointer-events:none; }
+    #splash img { width:150px; height:150px; animation:pulse 1.4s ease-in-out infinite; }
+    #splash .load { margin:18px 0 0; font-size:15px; color:#0b2a6b; }
+    #splash .dev {
+      position:absolute; left:0; right:0;
+      bottom:calc(24px + env(safe-area-inset-bottom, 0px));
+      text-align:center; font-size:13px; color:#555; line-height:1.6;
+    }
+    #splash .dev b { color:#0b2a6b; }
+    @keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.06);opacity:.85} }
+  </style>
+</head>
+<body>
+  <div id="splash">
+    <img src="icon-512.png" alt="Logo">
+    <p class="load">Loading...</p>
+    <div class="dev">
+      Developer : <b>Satveer Jat</b><br>
+      Mobile : 8949031009
+    </div>
+  </div>
+
+  <iframe id="app" src="https://script.google.com/macros/s/AKfycbxdmUrEEudjFaJlUHkiJv5dBbNPf1Yn6cU9ZNexLbFa9JoYCqXYbAZb8ekJ9627tXTKFw/exec"
+          allow="camera; microphone; geolocation; clipboard-write"></iframe>
+
+  <script>
+    var sp = document.getElementById('splash');
+    function hideSplash() { sp.classList.add('hide'); setTimeout(function () { sp.style.display = 'none'; }, 450); }
+    document.getElementById('app').addEventListener('load', hideSplash);
+    setTimeout(hideSplash, 10000);   // 10 sec baad kisi bhi halat me hata do
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+</html>
